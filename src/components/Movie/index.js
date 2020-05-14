@@ -12,7 +12,6 @@ export default function Movie(props) {
             />
         </Container>
     )
-    
 
     return ''; 
 }

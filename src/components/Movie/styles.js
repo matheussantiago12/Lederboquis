@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const Container = styled.div`
     
     img {
-        border-radius: 5px;
-        border: 2px solid rgb(200, 200, 200);
+        border-radius: 4px;
+        border: 2px solid #bcbfc7;
         margin: 10px;
     }
 `;

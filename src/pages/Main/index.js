@@ -9,14 +9,19 @@ const apiKey = "614202b1349a9d24b50b55bbe161f514";
 
 export default function Main() {
     const [theme, setTheme] = useState(darkTheme);
-    const [movies, setMovies] = useState([]);
+    const [popularMovies, setPopularMovies] = useState([]);
+    const [moviesForKids, setMoviesForKids] = useState([]);
 
     useEffect(() => {
-        api.get(`/discover/movie?with_genres=18&sort_by=vote_average.desc&vote_count.gte=10&api_key=${apiKey}`)
+        api.get(`/discover/movie?sort_by=popularity.desc&api_key=${apiKey}`)
             .then(response => {
-                setMovies(response.data.results);
-                console.log(response.data);
+                setPopularMovies(response.data.results);
             });
+        
+        api.get(`/discover/movie?certification_country=US&certification.lte=G&sort_by=popularity.desc&api_key=${apiKey}`)
+            .then(response => {
+                setMoviesForKids(response.data.results);
+            })
     }, []);
 
     return (
@@ -26,16 +31,26 @@ export default function Main() {
             secondaryFontColor={theme.font.secondary}
         >
             <div className="body">
-                {movies.map(movie => (
-                    <>
+                <div className="sectionHeader">
+                    <h2>FILMES POPULARES</h2>
+                </div>
+                <div className="popularMovies">
+                    {popularMovies.slice(0, 18).map(popMovie => (
                         <Movie 
-                            posterPath={movie.poster_path}
+                            posterPath={popMovie.poster_path}
                         />
-                        <Movie 
-                            posterPath={movie.poster_path}
+                    ))}
+                </div>
+                <div className="sectionHeader">
+                    <h2>POPULAR ENTRE AS CRIANÇAS</h2>
+                </div>
+                <div className="popularMovies">
+                    {moviesForKids.slice(0, 18).map(kidMovie => (
+                        <Movie
+                            posterPath={kidMovie.poster_path}
                         />
-                    </>
-                ))}
+                    ))}
+                </div>
             </div>
         </Container>
     );
